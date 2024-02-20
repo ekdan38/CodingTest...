@@ -14,14 +14,22 @@ public class Main {
     public static void main(String[] args) throws IOException {
     	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     	BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    	long N = Long.parseLong(br.readLine());
-    	int a = (int)N;
-    	int[] arr = new int[a];
-    	for(int i = 0; i < a; i++)arr[i] = Integer.parseInt(br.readLine());
+    	int N = Integer.parseInt(br.readLine());
+    	int[] arr = new int[N];
+    	int[] counting_arr = new int[10001];
+    
+    	for(int i = 0; i < N; i++) arr[i]= Integer.parseInt(br.readLine());
+    	for(int i = 0; i < N; i++) counting_arr[arr[i]]++;
     	
-    	Arrays.sort(arr);
-    	for(int num:arr)bw.write(num+"\n");
+    	for(int i = 0; i < 10001; i++) {
+    		if(counting_arr[i] != 0) {
+    			for(int j = 0; j < counting_arr[i]; j++)bw.write(i+"\n");
+    		}
+    	}
+    	
+    	
     	bw.flush();
     	bw.close();
+    	
     }
 }
