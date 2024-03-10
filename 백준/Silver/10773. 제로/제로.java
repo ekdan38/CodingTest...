@@ -20,6 +20,8 @@ public class Main {
     		if(num == 0 && !stack.empty())stack.pop();
     		else stack.push(num);
     	}
+
+        
     	int sum = 0;
     	while(!stack.empty()) {
     		sum += stack.pop();
