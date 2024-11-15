@@ -3,8 +3,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
-    static int[] dp = new int[1001];    // 메모이제이션을 위한 배열
-
     public static void main(String[] args) throws IOException {
         /**
          * 1302 베스트셀러
@@ -45,4 +43,3 @@ public class Main {
         bw.close();
     }
 }
-
