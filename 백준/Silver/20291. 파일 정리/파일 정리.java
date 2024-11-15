@@ -1,9 +1,8 @@
 import java.io.*;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Main {
-    static int[] dp = new int[1001];    // 메모이제이션을 위한 배열
 
     public static void main(String[] args) throws IOException {
         /**
