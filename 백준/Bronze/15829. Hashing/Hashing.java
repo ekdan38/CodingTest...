@@ -17,14 +17,18 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int N = Integer.parseInt(br.readLine());
+        int M = 1234567891;
         String str = br.readLine();
 
-        int result = 0;
+        long result = 0;
+        long pow = 1;
         for(int i = 0; i < N; i++){
-            int c = str.charAt(i) - 96;
-            result +=  c * (int) Math.pow(31, i);
+            int c = str.charAt(i) - 'a' + 1;
+            result +=  c * pow % M;
+            pow = 31 * pow % M;
         }
 
+        result %= M;
         bw.write(String.valueOf(result));
         bw.flush();
         bw.close();
