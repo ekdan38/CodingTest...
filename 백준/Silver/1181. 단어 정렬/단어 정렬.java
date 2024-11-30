@@ -17,6 +17,12 @@ import java.util.stream.Collectors;
  *      1. 정렬된 단어 출력
  */
 
+/**
+ * 팀 스터디:
+ *
+ *
+ */
+
 public class Main {
 
     public static void main(String[] args) throws IOException {
@@ -24,36 +30,39 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringBuilder sb = new StringBuilder();
 
-        //중복 제거 위해서 set에 저장
-        HashSet<String> set = new HashSet<>();
         int N = Integer.parseInt(br.readLine());
-        
+
+        TreeSet<Sentence> treeSet = new TreeSet<>();
         for(int i = 0; i < N; i++){
-            set.add(br.readLine());
+            String str = br.readLine();
+            treeSet.add(new Sentence(str, str.length()));
         }
 
-        //Comparator의 compare 오버라이딩
-        List<String> collect = set.stream()
-                .sorted(new Comparator<String>() {
-                    @Override
-                    public int compare(String s1, String s2) {
-                        // 사전순 정렬
-                        if(s1.length() == s2.length()){
-                            return s1.compareTo(s2);
-                        }
-                        // 짧은 순 정렬
-                        else{
-                            return s1.length() - s2.length();
-                        }
-                    }
-                }).collect(Collectors.toList());
-
-        for (String s : collect) {
-            sb.append(s).append("\n");
+        for (Sentence sentence : treeSet) {
+            sb.append(sentence.word).append("\n");
         }
 
         bw.write(sb.toString());
         bw.flush();
         bw.close();
+    }
+    static class Sentence implements Comparable<Sentence>{
+        String word;
+        int length;
+
+        public Sentence(String word, int length) {
+            this.word = word;
+            this.length = length;
+        }
+
+        @Override
+        public int compareTo(Sentence o) {
+            if(this.length != o.length){
+                return this.length - o.length;
+            }
+            else{
+                return this.word.compareTo(o.word);
+            }
+        }
     }
 }
