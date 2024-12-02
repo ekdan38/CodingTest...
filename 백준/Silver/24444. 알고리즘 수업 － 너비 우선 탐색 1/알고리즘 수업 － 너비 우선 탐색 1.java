@@ -5,7 +5,6 @@ public class Main {
     static List<List<Integer>> graph;
     static boolean[] visited;
     static int[] visitOrder; // 각 정점의 방문 순서를 저장하는 배열
-    static int order = 1; // 방문 순서를 기록할 변수
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -57,6 +56,9 @@ public class Main {
         Queue<Integer> queue = new LinkedList<>();
         queue.offer(start);
         visited[start] = true;
+
+        int order = 1; // 여기서 지역 변수로 방문 순서 초기화
+
         visitOrder[start] = order++; // 시작 정점의 방문 순서를 1로 설정
 
         while (!queue.isEmpty()) {
