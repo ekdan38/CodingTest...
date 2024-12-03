@@ -8,9 +8,10 @@ import java.util.*;
  *문제 분석:
  *      1. 수빈이는 걷거나 순간이동 가능 (x -1) or (x + 1) or (2 * x)
  *      2. 수빈이가 동생까지 최단거리 (초)
+ *      3. bfs로 풀자
 
  * 출력:
- *      1. 성공이면 색상, 위치 출력
+ *      1. 수빈이가 동생까지 죄단거리 (초) 출력
  */
 
 public class Main {
@@ -39,6 +40,7 @@ public class Main {
     static int bfs(int start){
         Queue<Integer> queue = new LinkedList<>();
         //index N부터 시작
+        //visited 범위 최대값으로 고정 N이나 K로 주면 안됨
         boolean[] visited = new boolean[100001];
         queue.offer(start);
         visited[start] = true;
@@ -54,9 +56,11 @@ public class Main {
                 }
                 for(int j = 0; j < 3; j++){
                     int next;
+                    //걷기 (+1, -1)
                     if(j != 2){
                         next = current + dx[j];
                     }
+                    //순간이동 (*2)
                     else{
                         next = current * dx[j];
                     }
