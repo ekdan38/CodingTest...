@@ -24,9 +24,10 @@ public class Main {
 
         String str = br.readLine();
 
-        // + 앞뒤 녀석들 다 더한다
+        // -로 split => + 연산 끼리 분류
         String[] splitByMinus = str.split("[-]");
 
+        // +로 split => + 연산 다해주고 다시 splitByMinus에 넣는다.
         for(int i = 0; i < splitByMinus.length; i++){
             String[] splitByPlus = splitByMinus[i].split("[+]");
             int sum = 0;
@@ -36,15 +37,13 @@ public class Main {
             splitByMinus[i] = String.valueOf(sum);
         }
 
-        // 첫번째는 양수이다..수동으로 넣어주자
+        // 연산 결과에서 각각 index 값 빼주면 됨-
+        // 다만, 첫번째는 양수이다..수동으로 넣어주자
         int result = Integer.parseInt(splitByMinus[0]);
-
-        if(splitByMinus.length > 1){
-            for(int i = 1; i< splitByMinus.length; i++){
-                result -= Integer.parseInt(splitByMinus[i]);
-            }
+        
+        for(int i = 1; i< splitByMinus.length; i++){
+            result -= Integer.parseInt(splitByMinus[i]);
         }
-
 
         bw.write(String.valueOf(result));
         bw.flush();
