@@ -27,7 +27,8 @@ public class Main {
 
         for(int i = 0; i < 20; i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
-            String subject = st.nextToken();
+            // 과목 이름 필요 없음
+            st.nextToken();
             double credit = Double.parseDouble(st.nextToken());
             String grade = st.nextToken();
 
@@ -38,9 +39,9 @@ public class Main {
                 sum += calculate(credit, grade);
             }
         }
-        String result =  String.format("%.6f", (sum / totalCredit));
+        Double result = sum / totalCredit;
 
-        bw.write(String.valueOf(sum / totalCredit));
+        bw.write(String.valueOf(result));
         bw.flush();
         br.close();
         bw.close();
@@ -55,7 +56,7 @@ public class Main {
             case "C0" : return credit * 2.0;
             case "D+" : return credit * 1.5;
             case "D0" : return credit * 1.0;
-            default : return  0.0;
+            default : return 0.0;
         }
     }
 
