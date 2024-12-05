@@ -51,6 +51,7 @@ public class Main {
 
         }
 
+        // 한줄에 20개씩 출력
         StringBuilder result = new StringBuilder();
         for(int i  = 1; i <= switchNum; i++){
             result.append(switchArr[i]).append(" ");
@@ -71,7 +72,9 @@ public class Main {
 
     // 여학생
     static void female(int number){
+        // 기준점은 무조건 바꿔줌
         switchArr[number] = switchArr[number] > 0 ? 0 : 1;
+        // 기준점 기준으로 양쪽 탐색, 양쪽 다르면 종료
         int leftIndex = number - 1;
         int rightIndex = number + 1;
         while(leftIndex >= 1 && rightIndex <= switchNum){
