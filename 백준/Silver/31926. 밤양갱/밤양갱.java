@@ -19,10 +19,10 @@ import java.util.*;
  *      N = 5 = 12,
  *      N = 6 = 12,
  *      N = 7 = 12, // 2^2 = 4
- *      N = 8 = 13
- *      ~           // 2^3 = 8
- *      => 2의 제곱에 대해 규칙이 생김
- *      => 각 결과에서 10을 빼고 보자
+ *      N = 8 = 13,
+ *      ~
+ *      N = 15 = 13 // 2^3 = 8
+ *      => 2의 거듭 제곱에 대해 구간을 갖는 규칙이 생김
  *      => N = 3 은 2^1 < 3 < 2^2 이다 그러면 2^1 구간의 값을 갖게 된다..
  *      => 2의 어느 제곱 구간에 속 하나를 알면 된다.
  *      => 2로 나눠지는 값을 구하자
@@ -36,14 +36,15 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int N = Integer.parseInt(br.readLine());
-        int cnt = 0;
+        // 모든 값에 10을 더해줘야 한다.
+        int cnt = 10;
         // 2로 나눠질때 까지 반복 => 2의 거듭제곱에 속해야함
         while(N > 1){
             N /= 2;
             cnt++;
         }
 
-        bw.write(String.valueOf(cnt + 10));
+        bw.write(String.valueOf(cnt));
         bw.flush();
         br.close();
         bw.close();
