@@ -20,6 +20,7 @@ public class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int n = Integer.parseInt(br.readLine());
+        // 거스름 돈 2원부터 계산
         if(n > 1){
             int min = 100000;
             for(int i = 0; i <= n / 5; i++){
@@ -31,14 +32,15 @@ public class Main {
                 }
                 // 5원이 1개 이상일 때
                 else{
-
-                    // 돈 거슬러 줄 수 있으면, 최소 동전 개수보다 작으면
-                    if((n - (i * 5)) % 2 == 0 && min > (n - (i * 5)) % 2) min = i + (n - (i * 5)) / 2;
+                    // 돈 거슬러 줄 수 있으면, 최소 동전 개수보다 작으면 업데이트
+                    int five = (n - (i * 5));
+                    if(five % 2 == 0 && min > five % 2) min = i + (five / 2);
                 }
             }
             if(min == 100000)bw.write(String.valueOf(-1));
             else bw.write(String.valueOf(min));
         }
+        // 거스름 돈이 2원 미만이면 처리할 -1 출력하면 된다.
         else bw.write(String.valueOf(-1));
 
         bw.flush();
