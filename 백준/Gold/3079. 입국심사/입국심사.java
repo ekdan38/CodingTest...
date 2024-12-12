@@ -28,11 +28,10 @@ public class Main {
         int M = Integer.parseInt(st.nextToken());
 
         // 7초 10초 걸리는 심사관한테 6명이 심사를 받을때 단순하게 생각하면 가장 적게 걸리는 경우는 6x7 = 42이고
-        // 가장 오래 걸리는 시간은 10 x 7이다. 그러면 문제에서 원하는 답은 1 ~ 42초 사이에 있을거다.
-        // 근데 최악의 경우에는 10^9 x 10^9 = 10^18이다. 일단 int 범위 벗어난다.
+        // 가장 오래 걸리는 시간은 10 x 7이다. 근데 심사관이 한명이 아니니깐 문제에서 원하는 답은 1 ~ 42초 사이에 있을거다.
+        // 근데 최악의 경우에는 10^9 x 10^9 = 10^18이다. 일단 int 범위 벗어난다. => long 사용
         // 그러면 일단 각 심사관 심사 시간을 정렬하자. => 1 ~ (가장 앞에있는 심사관의 심사 시간 x 인원수) 이 범위에 답이 있다.
-        // 1 ~ 42 초를 두고 하면 최대 42초 최소 1초이다.
-        // 각 심사관이 처리 가능한 인원 => 7초 심사관 (42 / 7 = 6명), 10초 심사관(42 / 10 = 4명)
+        // 1 ~ 42 초를 두고 하면 최대 42초의 범위이다.
 
         // 심사관 마다 걸리는 시간
         long [] times = new long[N];
@@ -60,9 +59,9 @@ public class Main {
             if(cnt < M) minTime = midTime + 1;
             else maxTime = maxTime = midTime - 1;
         }
-        System.out.println(minTime);
 
-
+        
+        bw.write(Long.toString(minTime));
         bw.flush();
         br.close();
         bw.close();
