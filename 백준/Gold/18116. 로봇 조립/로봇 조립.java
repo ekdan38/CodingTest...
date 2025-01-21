@@ -42,11 +42,12 @@ public class Main {
 
             parent = new int[ARR_SIZE];
             cnt = new int[ARR_SIZE];
+            Arrays.fill(cnt, 1);
 
             // 초기화
-            for(int i = 1; i <= ARR_SIZE - 1; i++){
+            for(int i = 1; i < ARR_SIZE; i++){
                 parent[i] = i;
-                cnt[i] = 1;
+//                cnt[i] = 1;
             }
 
             for(int i = 0; i < N; i++){
