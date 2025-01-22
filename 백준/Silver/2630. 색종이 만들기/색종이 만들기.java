@@ -36,8 +36,6 @@ public class Main {
                     arr[i][j] = Integer.parseInt(st.nextToken());
                 }
             }
-
-
             divide(0, 0, N);
 
             bw.write(whiteCnt + "\n" + blueCnt);
@@ -46,16 +44,17 @@ public class Main {
             bw.close();
         }
         static void divide(int row, int col, int size){
-            // 전체가 white이면, blue이면 cnt ++;
             if(!validateColor(row, col, size)){
                 size /= 2;
-                divide(row, col, size);
                 divide(row, col + size, size);
-                divide(row + size, col, size);
+                divide(row, col, size);
                 divide(row + size, col + size, size);
+                divide(row + size, col, size);
             }
         }
-        static boolean validateColor(int row, int col, int size){
+        
+    // 전체가 white Or blue => cnt ++;
+    static boolean validateColor(int row, int col, int size){
             int sum = 0;
             for (int i = row; i < size + row; i++){
                 for(int j = col; j < size + col; j++){
