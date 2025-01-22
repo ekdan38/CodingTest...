@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.*;
 
@@ -52,7 +51,7 @@ public class Main {
                 divide(row + size, col, size);
             }
         }
-        
+
     // 전체가 white Or blue => cnt ++;
     static boolean validateColor(int row, int col, int size){
             int sum = 0;
