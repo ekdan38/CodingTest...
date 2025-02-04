@@ -48,9 +48,7 @@ public class Main {
                 for(int j = 0; j < N; j++){
                     if(userField[i][j] == 'x'){
                         // 사용자가 연 칸이 지뢰면
-                        if(mineField[i][j] == '*') {
-                            isMine = true;
-                        }
+                        if(mineField[i][j] == '*') isMine = true;
                         // 사용자가 연 칸이 지뢰가 아니면 8방향에 지뢰 개수
                         else resultField[i][j] = (char) ('0' + searchMines(i, j));
                     }
@@ -58,7 +56,7 @@ public class Main {
                 }
             }
             // 지뢰 밟았으면 지뢰 위치 표시
-            if(isMine) makeFieldToMines();
+            if(isMine) findMinesAndFillField();
 
             StringBuilder result = new StringBuilder();
             for(int i = 0; i < N; i++){
@@ -84,11 +82,10 @@ public class Main {
             return cnt;
         }
 
-        static void makeFieldToMines(){
+        static void findMinesAndFillField(){
             for(int i = 0; i < N; i++){
                 for(int j = 0; j < N; j++){
                     if(mineField[i][j] == '*') resultField[i][j] = '*';
-//                    resultField[i][j] = mineField[i][j] == '*' ? '*' : '.';
                 }
             }
         }
