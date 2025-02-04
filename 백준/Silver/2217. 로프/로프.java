@@ -31,7 +31,7 @@ public class Main {
             }
             Arrays.sort(rope);
             int max = 0;
-            
+
             for (int i = 0; i < N; i++) {
                 max = Math.max(max, rope[i] * (N - i));
             }
@@ -43,3 +43,4 @@ public class Main {
         }
 
     }
+
