@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
@@ -42,15 +43,15 @@ public class Main {
     }
     static void bfs(){
         boolean []visited = new boolean[100000 + 1];
-        Queue<int[]> queue = new LinkedList<>();
+        Queue<Node> queue = new LinkedList<>();
         // 시작은 위치 N, 최종 시간 0
-        queue.offer(new int[]{N, 0});
+        queue.offer(new Node(N, 0));
         visited[N] = true;
 
         while(!queue.isEmpty()){
-            int[] current = queue.poll();
-            int location = current[0];
-            int time = current[1];
+            Node current = queue.poll();
+            int location = current.location;
+            int time = current.time;
 
             // 종료 선언
             if(location == K) result = Math.min(result, time);
@@ -58,21 +59,35 @@ public class Main {
             // 경계, visited 체크
             // 1. 2 * X 이동 => 위치 값 * 2 해주고, 걸린 시간은 그대로 (0초 소요이기 때문)
             if(location * 2 <= 100000 && !visited[location * 2]) {
-                queue.offer(new int[]{location * 2, time});
+//                queue.offer(new int[]{location * 2, time});
+                queue.offer(new Node(location * 2, time));
                 visited[location * 2] = true;
             }
             // 3. X - 1 이동 => 위치 값 - 1 해주고, 걸린 시간은 +1
             if(location - 1 >= 0 && !visited[location - 1]) {
-                queue.offer(new int[]{location - 1, time + 1});
+                queue.offer(new Node(location -1, time + 1));
                 visited[location - 1] = true;
             }
-            
+
             // 2. X + 1 이동 => 위치 값 + 1 해주고, 걸린 시간은 +1
             if(location + 1 <= 100000 && !visited[location + 1]) {
-                queue.offer(new int[]{location + 1, time + 1});
+                queue.offer(new Node(location + 1, time + 1));
                 visited[location + 1] = true;
             }
 
+        }
+    }
+    static class Node{
+        int location;
+        int time;
+
+        public Node(int location, int time) {
+            this.location = location;
+            this.time = time;
+        }
+
+        public int getTime() {
+            return time;
         }
     }
 }
