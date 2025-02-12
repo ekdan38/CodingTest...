@@ -13,9 +13,6 @@
 *       출력
 *       1. 이벤트 상품을 받는 직원의 수 return
 */
-import java.util.*;
-import java.io.*;
-
 class Solution {
     public int solution(int[] schedules, int[][] timelogs, int startday) {
         int N = schedules.length;
