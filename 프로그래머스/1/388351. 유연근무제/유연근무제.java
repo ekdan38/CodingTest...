@@ -31,9 +31,7 @@ class Solution {
                 // 시작 날짜 고려
                 startday = startday % 8 == 0 ? 1 : startday; 
                 if(startday != 6 && startday != 7){
-                    if(timelogs[i][j] > deadLine) {
-                        cnt++;
-                    }   
+                    if(timelogs[i][j] > deadLine) cnt++;
                 }
                 startday++;
             }
