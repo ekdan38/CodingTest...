@@ -27,7 +27,7 @@ public class Main {
 
         while (start <= end) {
             long mid = (end + start) / 2;
-            if (Math.pow(mid, 2) >= N) {
+            if ((double) mid * mid >= N) {
                 answer = mid;
                 end = mid - 1;
             }
