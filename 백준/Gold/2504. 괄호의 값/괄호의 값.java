@@ -24,31 +24,30 @@ public class Main {
 
         int result = 0;
         int midResult = 1;
-        boolean isWrong = false;
         for(int i = 0; i < strArr.length; i++){
             char c = strArr[i];
             if(c == '('){
                 stack.push(c);
                 midResult *= 2;
             }
-            else if(c == '['){
-                stack.push(c);
-                midResult *= 3;
-            }
             else if(c == ')'){
                 // 잘못된 괄호열
                 if(stack.isEmpty() || stack.peek() != '(') {
-                    isWrong = true;
+                    result = 0;
                     break;
                 }
                 if(strArr[i - 1] == '(') result += midResult;
                 stack.pop();
                 midResult /= 2;
             }
+            else if(c == '['){
+                stack.push(c);
+                midResult *= 3;
+            }
             else if(c == ']'){
                 // 잘못된 괄호열
                 if(stack.isEmpty() || stack.peek() != '[') {
-                    isWrong = true;
+                    result = 0;                
                     break;
                 }
                 if(strArr[i - 1] == '[') result += midResult;
@@ -57,7 +56,7 @@ public class Main {
             }
         }
 
-        if(isWrong || !stack.isEmpty()) bw.write(Integer.toString(0));
+        if(!stack.isEmpty()) bw.write(Integer.toString(0));
         else bw.write(Integer.toString(result));
         bw.flush();
         bw.close();
