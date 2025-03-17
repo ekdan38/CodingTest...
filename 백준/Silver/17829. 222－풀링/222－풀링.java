@@ -1,49 +1,63 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * 17829 222_폴링
+ *
+ * 입력:
+ *      1. 첫째 줄 N (2 ~ 1024) N은 2의 거듭 제곱 n^k (1 ~ k ~ 10)
+ *      2. 다음 N개의 줄마다 각 행의 원소 가 주어진다. n * n
+ *
+ *
+ * 문제 분석:
+ *      1. 주어지는 행렬 2x2 로 쪼개면서 두번째 큰 수 찾아서 또 모아서 2x2 반복
+ *      => 재귀
+ * 출력:
+ *      1.
+ *
+ * */
 
 public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    // 222-풀링을 수행하는 함수
-    public static int[][] pool(int[][] arr, int n) {
-        int newSize = n / 2;  // 새 배열의 크기
-        int[][] newArr = new int[newSize][newSize];
-
-        // 2x2 영역에서 두 번째로 큰 수를 찾아서 새로운 배열에 저장
-        for (int i = 0; i < newSize; i++) {
-            for (int j = 0; j < newSize; j++) {
-                int[] values = new int[4];
-                values[0] = arr[2 * i][2 * j];           // 왼쪽 상단
-                values[1] = arr[2 * i][2 * j + 1];       // 오른쪽 상단
-                values[2] = arr[2 * i + 1][2 * j];       // 왼쪽 하단
-                values[3] = arr[2 * i + 1][2 * j + 1];   // 오른쪽 하단
-
-                // 두 번째로 큰 값 찾기
-                java.util.Arrays.sort(values);
-                newArr[i][j] = values[2];  // 두 번째로 큰 값
+        int N = Integer.parseInt(br.readLine());
+        int [][] arr = new int[N][N];
+        for(int i = 0; i < N; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for(int j = 0; j < N; j++){
+                arr[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        return newArr;  // 풀링이 완료된 새 배열 반환
+        bw.write(Integer.toString(solve(N, arr)));
+        bw.flush();
+        bw.close();
+        br.close();
     }
+    static int solve(int size, int [][] arr){
+        while(size > 1){
+            int newSize = size / 2;
+            int [][] halfArr = new int[newSize][newSize];
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();  // N 값 입력
-        int[][] arr = new int[N][N];
-
-        // 배열 입력 받기
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                arr[i][j] = sc.nextInt();
+            for(int i = 0; i < newSize; i++) {
+                for(int j = 0; j < newSize; j++){
+                    // 2x2 배열 만들고 값 넣는다. 여기서 두번째 큰 값 찾아야 함
+                    // => 굳이 2x2 를 만들어야 할까 1차원 배열에서 두번째 값 골라도 된다.
+                    int [] twoArr = new int [4];
+                    twoArr[0] = arr[2 * i][2 * j];
+                    twoArr[1] = arr[2 * i + 1][2 * j];
+                    twoArr[2] = arr[2 * i][2 * j + 1];
+                    twoArr[3] = arr[2 * i + 1][2 * j + 1];
+                    Arrays.sort(twoArr);
+                    halfArr[i][j] = twoArr[2];
+                }
             }
+            arr = halfArr;  // 새 배열을 arr에 할당
+            size = newSize;
         }
-
-        // 222-풀링을 반복하여 1x1 배열로 만들기
-        while (N > 1) {
-            arr = pool(arr, N);  // 풀링 함수 호출
-            N /= 2;  // 배열 크기 반으로 줄이기
-        }
-
-        // 최종 결과 출력
-        System.out.println(arr[0][0]);
+        return arr[0][0];
     }
 }
