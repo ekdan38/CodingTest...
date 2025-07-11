@@ -1,37 +1,39 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
-public class Main {
-
-    public static void main(String[] args) throws IOException {
-        // 전부다 소문자니깐 소문자로 index접근해서 확인해보자.
-        
+public class Main{
+    public static void main(String[] args)throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int cnt = 0;
-        int N = Integer.parseInt(br.readLine());
-        for(int i = 0; i < N; i++){
-            String str = new StringTokenizer(br.readLine()).nextToken();
-            if(isGroupWords(str)){
-                cnt++;
-            }
-        }
-        System.out.println(cnt);
-    }
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-    private static boolean isGroupWords(String str) {
-        boolean[] checkArr = new boolean['z' - 'a' + 1];
-        char previous = str.charAt(0);
-        checkArr[previous - 'a'] = true;
-        for(int i = 1; i < str.length(); i++){
-            char current = str.charAt(i);
-            if(current != previous){
-                if(checkArr[current - 'a']){
-                    return false;
-                }
-                checkArr[current - 'a'] = true;
+        int N = Integer.parseInt(br.readLine());
+        // start, end 찾고 그 사이에 다른게 존재하면, return false;
+        // 그게 아니라면 idx 값 end + 1로 idx 갱신
+        // while문 끝까지 처리하면, 그냥 true return
+
+        int cnt = 0;
+        for(int i = 0; i < N; i++){
+            String str = br.readLine();
+            if(check(str))cnt++;
+        }
+        bw.write(String.valueOf(cnt));
+        bw.flush();
+    }
+    static boolean check(String str){
+        int idx = 0;
+        while(idx < str.length()){
+            char c = str.charAt(idx);
+            int start = str.indexOf(c);
+            int end = str.lastIndexOf(c);
+            String sub = str.substring(start, end + 1);
+            for(int i = 0; i < sub.length(); i++){
+                if(sub.charAt(i) != c) return false;
             }
-            previous = current;
+            idx = end + 1;
         }
         return true;
     }
+
+
+
 }
