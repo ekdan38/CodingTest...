@@ -1,47 +1,46 @@
+// 1,2,3,4,5,6,7  k = 3
+// 3, 6  12457
+//
+
 import java.io.*;
 import java.util.*;
-
-public class Main {
-
-    public static void main(String[] args) throws IOException {
-        /**
-         * 1158 요세푸스 문제
-         * 문제 분석: 1~N 번까지의 숫자들이 있고, K번째 숫자를 제거하면 된다.
-         *          모든 숫자가 사라질때까지.....
-         * 의사 결정:
-         *          큐를 사용해서 풀어보자
-         *          K이전의 숫자들은 다시 큐의 맨뒤로 넣어주자.
-         *          k번째 숫자를 빼면 된다.
-         *          이 과정을 큐의 사이즈가 1일때까지 반복하면된다.
-         *          어차피 큐의 사이즈가 1이면 값이 1개만 남아서 그냥 빼주면 된다.(불필요한 연산 제거하자, ", "처리하기도 이게 더 편하다.)
-         *
-         */
+public class Main{
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+        List<Integer> list = new ArrayList<>();
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("<");
-
         Queue<Integer> queue = new LinkedList<>();
-        for(int i = 0; i < N; i++)
-            queue.offer(i + 1);
+        int cnt = 0;
+        // 1회전
+        for(int i = 1; i <= N; i++){
+            cnt++;
+            if(cnt % K == 0) list.add(i);
+            else queue.offer(i);
+        }
+        // 2회전 ~
+        if(!queue.isEmpty()){
+            while(true){
+                cnt++;
+                if(cnt % K == 0) list.add(queue.poll());
+                else queue.offer(queue.poll());
 
-        while(queue.size() > 1){
-            for(int i = 0; i < K - 1; i++){
-                queue.offer(queue.poll());
+                if(queue.isEmpty()) break;
             }
-            sb.append(queue.poll()).append(", ");
         }
 
-        sb.append(queue.poll()).append(">");
-        bw.write(sb.toString());
+        if(list.size() == 1) bw.write("<" + list.get(0) + ">");
+        else {
+            for(int i = 0; i < list.size(); i++){
+                if(i == 0) bw.write("<" + list.get(i));
+                else if(i == list.size() - 1) bw.write(", " + list.get(i) + ">");
+                else bw.write(", " + list.get(i));
+            }            
+        }
         bw.flush();
-        bw.close();
     }
 }
-
