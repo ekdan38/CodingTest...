@@ -1,61 +1,57 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Main{
-    static int[]parent;
-    static boolean[] visited;
-    static List<Integer>[] graph;
+    static List<List<Integer>> graph = new ArrayList<>();
     static StringBuilder sb = new StringBuilder();
+    static int[] parents;
+
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        int M = N - 1;
+        // bfs 돌리면서 다음 탐색 범위가 현재 노드의 자식 노드이다.
+        // 따라서 다음 탐색 범위의 부모는 현재 노드
+        int N = Integer.parseInt(br.readLine());
+        parents = new int[N + 1];
 
-        visited = new boolean[N + 1];
-        graph = new ArrayList[N + 1];
-        parent = new int[N + 1];
-        for(int i = 1; i <= N; i++){
-            graph[i] = new ArrayList<>();
+        for(int i = 0; i <= N; i++){
+            graph.add(new ArrayList<>());
         }
 
-        for(int i = 0; i < M; i++){
+        StringTokenizer st;
+        for(int i = 0; i < N - 1; i++){
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
 
-            graph[a].add(b);
-            graph[b].add(a);
+            graph.get(a).add(b);
+            graph.get(b).add(a);
         }
 
-
-        bfs();
-        for(int i = 2; i <= N; i++){
-            sb.append(parent[i]).append("\n");
+        bfs(N, 1);
+        for(int i = 2; i < N + 1; i++){
+            sb.append(parents[i]).append("\n");
         }
-
         bw.write(sb.toString());
         bw.flush();
+
     }
-    static void bfs(){
+    static void bfs(int Node, int start){
+        boolean[] visited = new boolean[Node + 1];
         Queue<Integer> queue = new LinkedList<>();
-        queue.offer(1);
-        visited[1] = true;
+        queue.offer(start);
+        visited[start] = true;
 
         while(!queue.isEmpty()){
             int current = queue.poll();
-
-            for(int node : graph[current]){
-                if(!visited[node]){
-                    visited[node] = true;
-                    queue.offer(node);
-                    parent[node] = current;
+            for(int n : graph.get(current)){
+                if(!visited[n]){
+                    queue.offer(n);
+                    visited[n] = true;
+                    parents[n] = current;
                 }
             }
         }
     }
-
-
 }
