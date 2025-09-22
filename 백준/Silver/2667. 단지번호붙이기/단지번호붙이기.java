@@ -1,86 +1,70 @@
-/**
- * <문제 분석>
- *     1. 1이거나 visited == false 면 bfs 작동
- *     bfs 내부에서 각 단지의 수 기입
- *
- *     for i/-....
- *     for j....
- *     if[i][j] == 1 && ij == false; bfs
- *
- *
- *
- */
-import org.w3c.dom.Node;
-
-import java.io.*;
 import java.util.*;
+import java.io.*;
 public class Main{
-    static boolean[][] visited;
-    static int[][] graph;
+    static int[][] map;
     static int N;
-    static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, 1, 0, -1};
-    static List<Integer> list = new ArrayList<>();
+    static boolean[][] visited;
+    static final int[] dx = {-1, 0, 1, 0};
+    static final int[] dy = {0, 1, 0, -1};
+
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         N = Integer.parseInt(br.readLine());
-
-        graph = new int[N + 1][N + 1];
+        map = new int[N + 1][N + 1];
         visited = new boolean[N + 1][N + 1];
 
         for(int i = 1; i <= N; i++){
-            String str = br.readLine();
+            String input = br.readLine();
             for(int j = 1; j <= N; j++){
-                graph[i][j] = str.charAt(j - 1) - '0';
+                map[i][j] = input.charAt(j - 1) - '0';
             }
         }
 
-
+        List<Integer> list = new ArrayList<>();
+        int result = 0;
         for(int i = 1; i <= N; i++){
             for(int j = 1; j <= N; j++){
-                if(graph[i][j] == 1 && !visited[i][j]) bfs(i, j);
-            }
-        }
-
-        bw.write(list.size() + "\n");
-        Collections.sort(list);
-        for(int i : list){
-            bw.write(i + "\n");
-        }
-
-        bw.flush();
-    }
-    static void bfs(int x, int y){
-        int cnt = 0;
-        Queue<Node> queue = new LinkedList<>();
-        queue.offer(new Node(x, y));
-        visited[x][y] = true;
-
-        while(!queue.isEmpty()){
-            Node current = queue.poll();
-            cnt++;
-            for(int i = 0; i < 4; i++){
-                int nX = current.x + dx[i];
-                int nY = current.y + dy[i];
-
-                if(nX >= 1 && nX <= N && nY >= 1&& nY <=N && graph[nX][nY] == 1 && !visited[nX][nY]){
-                    queue.offer(new Node(nX, nY));
-                    visited[nX][nY] = true;
+                if(map[i][j] == 1) {
+                    list.add(bfs(i, j));
+                    result++;
                 }
             }
         }
-        if(cnt > 0) list.add(cnt);
-    }
-    
-    static class Node{
-        int x;
-        int y;
-        Node(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
-    }
 
+        StringBuilder sb = new StringBuilder();
+        sb.append(result).append("\n");
+        Collections.sort(list);
+        for(int n : list){
+            sb.append(n).append("\n");
+        }
+        bw.write(sb.toString());
+        bw.flush();
+    }
+    static int bfs(int x, int y){
+        int cnt = 1;
+        Queue<int[]> queue = new LinkedList<>();
+        visited[x][y] = true;
+        queue.offer(new int[]{x, y});
+
+        while(!queue.isEmpty()){
+            int[] current = queue.poll();
+            int cX = current[0];
+            int cY = current[1];
+            for(int i = 0; i < 4; i++){
+                int nX = cX + dx[i];
+                int nY = cY + dy[i];
+                if(nX > 0 && nX <= N && nY > 0 && nY <= N){
+                    if(!visited[nX][nY] && map[nX][nY] == 1){
+                        queue.offer(new int[]{nX, nY});
+                        visited[nX][nY] = true;
+                        map[nX][nY] = 0;
+                        cnt++;
+                    }
+                }
+            }
+        }
+        return cnt;
+    }
 }
