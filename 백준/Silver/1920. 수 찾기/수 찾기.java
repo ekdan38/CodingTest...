@@ -1,46 +1,58 @@
 import java.util.*;
 import java.io.*;
- 
-public class Main {
- 
-	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
-		
-		int N = in.nextInt();
-		int[] arr = new int[N];
- 
-		for(int i = 0; i < N; i++) {
-			arr[i] = in.nextInt();
-		}
-		
-		Arrays.sort(arr);
-		int M = in.nextInt();
-		
-		
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < M; i++) {
-			
-			if(binarySearch(arr, in.nextInt()) >= 0) {
-				sb.append(1).append('\n');
-			}
-			else {
-				sb.append(0).append('\n');
-			}
-		}
-		System.out.println(sb);
-	}
-	
-	public static int binarySearch(int[] arr, int key) {
-		int lo = 0;					
-		int hi = arr.length - 1;	
- 
-		while(lo <= hi) {
-			int mid = (lo + hi) / 2;	
-			if(key < arr[mid]) hi = mid - 1;
-			else if(key > arr[mid]) lo = mid + 1;
-			else return mid;
-		}
-		return -1;
- 
-	}
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int N = Integer.parseInt(br.readLine());
+        int[] arrN = new int[N];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < N; i++){
+            arrN[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int M = Integer.parseInt(br.readLine());
+        int[] arrM = new int[M];
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < M; i++){
+            arrM[i] = Integer.parseInt(st.nextToken());
+        }
+
+        // arrM에 존재하는 값들이 arrN에 존재하는지 탐색해야한다. -> -2^31 ~ 2^31 이기에 선형 탐색 불가
+
+        // 정렬
+        Arrays.sort(arrN);
+
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0 ; i < M; i++){
+            if(binarySearch(arrN, arrM[i])) sb.append("1");
+            else sb.append("0");
+            sb.append("\n");
+        }
+
+        bw.write(sb.toString());
+        bw.flush();
+
+    }
+    static boolean binarySearch(int[] arr, int target){
+        int start = 0;
+        int end = arr.length - 1;
+
+        while(start <= end){
+            int midIdx = (start + end) / 2;
+            int mid = arr[midIdx];
+            if(mid < target){
+                start = midIdx + 1;
+            }
+            else if(mid > target){
+                end = midIdx - 1;
+            }
+            else if(mid == target){
+                return true;
+            }
+        }
+        return false;
+
+    }
 }
