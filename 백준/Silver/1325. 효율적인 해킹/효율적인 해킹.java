@@ -1,31 +1,21 @@
-/**
- * <문제 분석>
- *     1번 컴퓨터로 시작해서 도달되는 노드들은 모두 감염된다.
- *     bfs로 풀이
- *
- */
-
-import java.io.*;
 import java.util.*;
+import java.io.*;
 public class Main{
-    static boolean[] visited;
-    static List<Integer>[] graph;
+    static List<List<Integer>> graph = new ArrayList<>();
+    static int N;
     static int[] result;
     static int max = -1;
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        StringBuilder sb = new StringBuilder();
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        graph = new ArrayList[N + 1];
         result = new int[N + 1];
-
-        for(int i = 1; i <= N; i++){
-            graph[i] = new ArrayList<>();
+        for(int i = 0; i <= N; i++){
+            graph.add(new ArrayList<>());
         }
 
         for(int i = 0; i < M; i++){
@@ -33,40 +23,35 @@ public class Main{
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
 
-            graph[b].add(a);
+            graph.get(b).add(a);
         }
 
         for(int i = 1; i <= N; i++){
-            bfs(i, N);
+            bfs(i);
         }
-
 
         for(int i = 1; i <= N; i++){
-            if(result[i] == max){
-                sb.append(i).append(" ");
-            }
+            if(result[i] == max) bw.write(i + " ");
         }
-        bw.write(sb.toString());
         bw.flush();
+
     }
-    static void bfs(int start, int N){
-        int cnt = 0;
-        visited = new boolean[N + 1];
+    static void bfs(int start){
+        boolean[] visited = new boolean[N + 1];
+        visited[start] = true;
         Queue<Integer> queue = new LinkedList<>();
         queue.offer(start);
-        visited[start] = true;
 
         while(!queue.isEmpty()){
             int current = queue.poll();
-            cnt++;
-            for(int n : graph[current]){
+            for(int n : graph.get(current)){
                 if(!visited[n]){
                     visited[n] = true;
                     queue.offer(n);
+                    result[start]++;
                 }
             }
         }
-        result[start] = cnt;
-        max = Math.max(cnt, max);
+        max = Math.max(result[start], max);
     }
 }
