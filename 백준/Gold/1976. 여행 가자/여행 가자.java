@@ -1,17 +1,19 @@
 import java.util.*;
 import java.io.*;
 public class Main{
-    static List<List<Integer>> graph = new ArrayList<>();
+    static int[] parents;
+
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        // BFS 풀이
+        // Union - Find
         int N = Integer.parseInt(br.readLine());
         int M = Integer.parseInt(br.readLine());
 
+        parents = new int[N + 1];
         for(int i = 0; i <= N; i++){
-            graph.add(new ArrayList<>());
+            parents[i] = i;
         }
 
         StringTokenizer st;
@@ -20,10 +22,7 @@ public class Main{
             st = new StringTokenizer(br.readLine());
             for(int j = 1; j <= N; j++){
                 int input = Integer.parseInt(st.nextToken());
-                if(input == 1){
-                    graph.get(i).add(j);
-                    graph.get(j).add(i);
-                }
+                if(input == 1) union(i, j);
             }
         }
 
@@ -33,31 +32,25 @@ public class Main{
             plans.add(Integer.parseInt(st.nextToken()));
         }
 
-        boolean result = bfs(N, plans.get(0), plans);
+        boolean result = possible(plans);
         bw.write(result ? "YES" : "NO");
         bw.flush();
     }
 
-    static boolean bfs(int N, int start, List<Integer> plans){
-        boolean[] visited = new boolean[N + 1];
-        visited[start] = true;
-        Queue<Integer> queue = new LinkedList<>();
-        queue.offer(start);
-
-        while(!queue.isEmpty()){
-            int current = queue.poll();
-            for(int n : graph.get(current)){
-                if(!visited[n]){
-                    visited[n] = true;
-                    queue.offer(n);
-                }
-            }
-        }
-        return possible(visited, plans);
+    static void union(int a, int b){
+        int A = find(a);
+        int B = find(b);
+        if(A != B) parents[B] = A;
     }
-    static boolean possible(boolean[] visited, List<Integer> plans){
+    static int find(int a){
+        if(parents[a] == a) return a;
+        return parents[a] = find(parents[a]);
+    }
+
+    static boolean possible(List<Integer> plans){
+        int root = find(plans.get(0));
         for(int n : plans){
-            if(!visited[n]) return false;
+            if(find(n) != root) return false;
         }
         return true;
     }
