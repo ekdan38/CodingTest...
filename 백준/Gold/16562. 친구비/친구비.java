@@ -35,7 +35,7 @@ public class Main{
         Arrays.fill(arr, Integer.MAX_VALUE);
 
         for(int i = 1; i <= N; i++){
-            arr[find(parents[i])] = Math.min(arr[find(parents[i])], pee[i]);
+            arr[find(i)] = Math.min(arr[find(i)], pee[i]);
         }
 
         for(int n : arr){
