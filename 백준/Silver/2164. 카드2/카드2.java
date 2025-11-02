@@ -8,7 +8,6 @@ public class Main{
         int N = Integer.parseInt(br.readLine());
 
         Queue<Integer> queue = new LinkedList<>();
-
         for(int i = 1; i <= N; i++){
             queue.offer(i);
         }
