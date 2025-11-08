@@ -1,33 +1,38 @@
-import java.io.*;
 import java.util.*;
-
-public class Main {
-    public static void main(String[] args) throws IOException {
+import java.io.*;
+public class Main{
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int a = Integer.parseInt(st.nextToken());
-        int b = Integer.parseInt(st.nextToken());
-        
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int A = Integer.parseInt(st.nextToken());
+        int B = Integer.parseInt(st.nextToken());
+
         Set<Integer> setA = new HashSet<>();
         Set<Integer> setB = new HashSet<>();
 
         st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < a; i++) {
+        while(A --> 0){
             setA.add(Integer.parseInt(st.nextToken()));
         }
+
         st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < b; i++) {
+        while(B --> 0){
             setB.add(Integer.parseInt(st.nextToken()));
         }
 
-        int ans = 0;
-        for(int num : setA) {
-            if(!setB.contains(num))  ans += 1;
+        int cnt = 0;
+        for(int n : setA){
+            if(setB.contains(n)){
+                cnt += 2;
+            }
         }
-        for(int num : setB) {
-            if(!setA.contains(num))  ans += 1;
-        }
-        System.out.println(ans);
+
+        int result = (setA.size() + setB.size()) - cnt;
+
+        bw.write(String.valueOf(result));
+        bw.flush();
+
     }
 }
