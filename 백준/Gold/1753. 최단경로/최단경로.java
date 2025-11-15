@@ -1,10 +1,7 @@
-
-import java.io.*;
 import java.util.*;
+import java.io.*;
 public class Main{
-
-    static boolean[] visited;
-    static List<Edge>[] graph;
+    static List<List<Node>> graph = new ArrayList<>();
     static int[] distance;
 
     public static void main(String[] args) throws IOException{
@@ -12,20 +9,15 @@ public class Main{
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         int V = Integer.parseInt(st.nextToken());
         int E = Integer.parseInt(st.nextToken());
-        int start = Integer.parseInt(br.readLine());
+        int K = Integer.parseInt(br.readLine());
 
-        visited = new boolean[V + 1];
-        graph = new ArrayList[V + 1];
-        distance = new int [V + 1];
-
-        // distance 초기화
+        distance = new int[V + 1];
         Arrays.fill(distance, Integer.MAX_VALUE);
-        // graph 초기화
+
         for(int i = 0; i <= V; i++){
-            graph[i] = new ArrayList<>();
+            graph.add(new ArrayList<>());
         }
 
         for(int i = 0; i < E; i++){
@@ -34,43 +26,49 @@ public class Main{
             int to = Integer.parseInt(st.nextToken());
             int weight = Integer.parseInt(st.nextToken());
 
-            graph[from].add(new Edge(to, weight));
+            graph.get(from).add(new Node(to, weight));
         }
 
-        dijkstra(start);
+        dijkstra(K);
 
-        for(int i = 1; i < distance.length; i++){
-            bw.write(distance[i] == Integer.MAX_VALUE ? "INF\n" : distance[i] + "\n");
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 1; i <= V; i++){
+            if(distance[i] == Integer.MAX_VALUE) sb.append("INF");
+            else sb.append(distance[i]);
+            sb.append("\n");
         }
 
-
-
+        bw.write(sb.toString());
         bw.flush();
     }
     static void dijkstra(int start){
-        PriorityQueue<Edge> pq = new PriorityQueue<>((a, b) -> Integer.compare(a.weight, b.weight));
-        pq.offer(new Edge(start, 0));
+        PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> o1.weight - o2.weight);
+        pq.offer(new Node(start, 0));
         distance[start] = 0;
 
         while(!pq.isEmpty()){
-            Edge current = pq.poll();
-            int currentNode = current.to;
-            if(visited[currentNode]) continue;
-            for(Edge e : graph[currentNode]){
-                int nextNode = e.to;
-                int nextWeight = e.weight;
-                if(distance[nextNode] > distance[currentNode] + nextWeight) {
-                    distance[nextNode] = distance[currentNode] + nextWeight;
-                    pq.offer(new Edge(nextNode, distance[nextNode]));
+            Node cNode = pq.poll();
+            int current = cNode.to;
+            int weight = cNode.weight;
+
+            if(distance[current] < weight) continue;
+
+            for(Node n : graph.get(current)){
+                int nextNode = n.to;
+                int nextWeight = weight + n.weight;
+
+                if(distance[nextNode] > nextWeight){
+                    pq.offer(new Node(nextNode, nextWeight));
+                    distance[nextNode] = nextWeight;
                 }
             }
         }
     }
-
-    static class Edge{
+    static class Node{
         int to;
         int weight;
-        Edge(int to, int weight){
+        public Node(int to, int weight){
             this.to = to;
             this.weight = weight;
         }
