@@ -2,13 +2,12 @@ import java.util.*;
 import java.io.*;
 public class Main{
     static List<List<Integer>> graph = new ArrayList<>();
+    static boolean[] visited;
+
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        // 도시의 개수 N, 도로의 개수 M, 거리 K, 출발 도시 X
-        // 최단 거리가 K 인 값이 여러개면 오름차순
-        // 최단 거리가 없으면 -1
         StringTokenizer st = new StringTokenizer(br.readLine());
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
@@ -18,6 +17,7 @@ public class Main{
         for(int i = 0; i <= N; i++){
             graph.add(new ArrayList<>());
         }
+        visited = new boolean[N + 1];
 
         for(int i = 0; i < M; i++){
             st = new StringTokenizer(br.readLine());
@@ -27,49 +27,37 @@ public class Main{
             graph.get(a).add(b);
         }
 
+        List<Integer> list = bfs(X, K);
         StringBuilder sb = new StringBuilder();
-        PriorityQueue<Integer> pq = bfs(N, K, X);
-        if(pq.isEmpty()){
-            sb.append("-1");
-        }
+        if(list.isEmpty()) sb.append("-1");
         else {
-            while(!pq.isEmpty()){
-                sb.append(pq.poll()).append("\n");
+            for(int n : list){
+                sb.append(n).append("\n");
             }
         }
-
         bw.write(sb.toString());
         bw.flush();
-
     }
-    static PriorityQueue<Integer> bfs(int N, int K, int X){
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-        boolean[] visited = new boolean[N + 1];
-        Queue<City> queue = new LinkedList<>();
-        queue.offer(new City(X, 0));
-        visited[X] = true;
+    static List<Integer> bfs(int start, int K){
+        List<Integer> list = new ArrayList<>();
+        Queue<int[]> queue = new LinkedList<>();
+        queue.offer(new int[]{start, 0});
+        visited[start] = true;
 
         while(!queue.isEmpty()){
-            City currentCity = queue.poll();
-            int current = currentCity.current;
-            int weight = currentCity.weight;
-            if(weight == K) pq.offer(current);
+            int[] current = queue.poll();
+            int idx = current[0];
+            int dis = current[1];
 
-            for(int n : graph.get(current)){
+            for(int n : graph.get(idx)){
                 if(!visited[n]){
+                    queue.offer(new int[]{n, dis + 1});
                     visited[n] = true;
-                    queue.offer(new City(n, weight + 1));
+                    if(dis + 1 == K) list.add(n);
                 }
             }
         }
-        return pq;
-    }
-    static class City{
-        int current;
-        int weight;
-        City(int current, int weight){
-            this.current = current;
-            this.weight = weight;
-        }
+        Collections.sort(list);
+        return list;
     }
 }
