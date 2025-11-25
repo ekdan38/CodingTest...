@@ -37,7 +37,7 @@ public class Main{
             }
 
             // 맨 뒤 1 추가
-            next = Long.parseLong(String.valueOf(current) + "1");
+            next = current * 10 + 1;
             if(next <= B){
                 if(!visited[(int)next]){
                     queue.offer(new long[]{next, dist + 1});
