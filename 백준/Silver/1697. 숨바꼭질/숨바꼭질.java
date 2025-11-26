@@ -1,75 +1,40 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
+public class Main{
+    static final int MAX = 100_000;
 
-/**
- * 1697 숨바꼭질
- * 입력:
- *      1. 수빈이 위치 N (0 ~ 100,000), 동생 위치 K(0 ~ 100,000)
- *문제 분석:
- *      1. 수빈이는 걷거나 순간이동 가능 (x -1) or (x + 1) or (2 * x)
- *      2. 수빈이가 동생까지 최단거리 (초)
- *      3. bfs로 풀자
-
- * 출력:
- *      1. 수빈이가 동생까지 죄단거리 (초) 출력
- */
-
-public class Main {
-    static int N, K;
-    static int[] dx = {-1, 1, 2};
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-        N = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
-
-        int bfs = bfs(N);
-
-        bw.write(String.valueOf(bfs));
-        bw.flush();
-        br.close();
-        bw.close();
+        System.out.print(bfs(N, M));
     }
-    static int bfs(int start){
-        Queue<Integer> queue = new LinkedList<>();
-        //index N부터 시작
-        //visited 범위 최대값으로 고정 N이나 K로 주면 안됨
-        boolean[] visited = new boolean[100001];
-        queue.offer(start);
-        visited[start] = true;
+    static int bfs(int N, int M){
+        Queue<int[]> queue = new LinkedList<>();
+        boolean[] visited = new boolean[MAX + 1];
 
-        int cnt = 0;
+        queue.offer(new int[]{N, 0});
+        visited[N] = true;
 
         while(!queue.isEmpty()){
-            int size = queue.size();
-            for(int i = 0; i < size; i++){
-                Integer current = queue.poll();
-                if(current == K){
-                    return cnt;
-                }
-                for(int j = 0; j < 3; j++){
-                    int next;
-                    //걷기 (+1, -1)
-                    if(j != 2){
-                        next = current + dx[j];
-                    }
-                    //순간이동 (*2)
-                    else{
-                        next = current * dx[j];
-                    }
-                    if(next >= 0 && next <= 100000 && !visited[next]){
-                        queue.offer(next);
-                        visited[next] = true;
-                    }
+            int[] currents = queue.poll();
+            int c = currents[0];
+            int dist = currents[1];
+
+            if(c == M) return dist;
+
+            int[] moves = {c + 1, c - 1, c * 2};
+            for(int next : moves){
+                if(next >= 0 && next <= MAX && !visited[next]){
+                    queue.offer(new int[]{next, dist + 1});
+                    visited[next] = true;
                 }
             }
-        cnt++;
         }
         return -1;
     }
-
-
 }
