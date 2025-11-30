@@ -48,7 +48,6 @@ public class Main{
         System.out.print(num + " " + rgNum);
     }
     static void bfs(boolean isRG, int x, int y){
-        int cnt = 0;
         char target = graph[x][y];
 
         Queue<int[]> queue = new LinkedList<>();
@@ -70,24 +69,21 @@ public class Main{
                 if(visited[nx][ny]) continue;
 
                 if(isRG){
-                    if(target == 'R' || target == 'G'){
-                        if(graph[nx][ny] == 'R' || graph[nx][ny] == 'G'){
-                            queue.offer(new int[]{nx, ny});
-                            visited[nx][ny] = true;
-                        }
+                    if(target == 'B'){
+                        if(graph[nx][ny] != 'B') continue;
                     }
                     else{
-                        if(graph[nx][ny] != target) continue;
-                        queue.offer(new int[]{nx, ny});
-                        visited[nx][ny] = true;
+                        // G, R
+                        if(graph[nx][ny] == 'B') continue;
                     }
+
                 }
                 else{
                     if(graph[nx][ny] != target) continue;
-                    queue.offer(new int[]{nx, ny});
-                    visited[nx][ny] = true;
                 }
 
+                queue.offer(new int[]{nx, ny});
+                visited[nx][ny] = true;
             }
         }
     }
